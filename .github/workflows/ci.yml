@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint-and-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run linter (if present)
+        run: |
+          if command -v flake8 &>/dev/null; then
+            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          else
+            echo "No linter configured — skipping."
+          fi
+
+      - name: Run tests (if present)
+        run: |
+          if [ -d tests ]; then
+            python -m pytest tests/ -v
+          else
+            echo "No tests directory found — skipping."
+          fi
