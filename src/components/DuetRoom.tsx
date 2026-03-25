@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 type Instrument = "Piano" | "Guitar" | "Drums" | "Synth" | "Violin";
 
@@ -30,6 +30,13 @@ export default function DuetRoom() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [hasRecording, setHasRecording] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
 
   const handleCreateRoom = () => {
     setRoomCode(generateRoomCode());
@@ -44,16 +51,17 @@ export default function DuetRoom() {
 
   const handleRecord = () => {
     if (isRecording) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
       setIsRecording(false);
       setHasRecording(true);
     } else {
       setIsRecording(true);
       setIsPlaying(false);
       setRecordingTime(0);
-      const interval = setInterval(() => {
+      intervalRef.current = setInterval(() => {
         setRecordingTime((t) => {
           if (t >= 30) {
-            clearInterval(interval);
+            if (intervalRef.current) clearInterval(intervalRef.current);
             setIsRecording(false);
             setHasRecording(true);
             return t;

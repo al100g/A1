@@ -45,11 +45,7 @@ export default function PlaylistCard({
           onClick={() => setPlaying(!playing)}
           className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-all duration-300"
         >
-          <div
-            className={`w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100 ${
-              playing ? "bg-white" : "bg-white"
-            }`}
-          >
+          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100">
             {playing ? (
               <span className="flex gap-0.5">
                 <span className="w-1 h-4 bg-gray-900 rounded-full" />

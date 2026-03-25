@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Mood, Genre, songSamples, moodColors, moodEmoji } from "@/data/songs";
 
 const moods: Mood[] = ["Happy", "Sad", "Energetic", "Calm", "Anxious", "Romantic"];
@@ -13,6 +13,11 @@ export default function SongGenerator() {
   const [generating, setGenerating] = useState(false);
   const [song, setSong] = useState<(typeof songSamples)[Mood][Genre] | null>(null);
   const [copied, setCopied] = useState(false);
+
+  const barHeights = useMemo(
+    () => Array.from({ length: 12 }, () => Math.floor(Math.random() * 40 + 10)),
+    []
+  );
 
   const handleGenerate = () => {
     setGenerating(true);
@@ -130,12 +135,12 @@ export default function SongGenerator() {
       {generating && (
         <div className="bg-white/5 border border-white/10 rounded-xl p-8 text-center space-y-4">
           <div className="flex justify-center items-end gap-1">
-            {Array.from({ length: 12 }).map((_, i) => (
+            {barHeights.map((height, i) => (
               <div
                 key={i}
                 className="w-1.5 bg-violet-500 rounded-full animate-pulse"
                 style={{
-                  height: `${Math.random() * 40 + 10}px`,
+                  height: `${height}px`,
                   animationDelay: `${i * 0.08}s`,
                 }}
               />
