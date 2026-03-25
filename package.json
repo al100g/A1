@@ -1,0 +1,14 @@
+{
+  "name": "a1",
+  "version": "1.0.0",
+  "description": "A1 — A music and mood empowerment AI that detects emotions, recommends songs, and sings personalized lyrics.",
+  "main": "src/a1.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "keywords": ["mood", "music", "ai", "recommendations", "lyrics"],
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
