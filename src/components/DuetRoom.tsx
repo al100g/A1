@@ -17,6 +17,12 @@ const mockParticipants = [
   { id: 2, name: "Jordan Lee", instrument: "Guitar", avatar: "JL", color: "from-pink-500 to-rose-600", status: "listening" },
 ];
 
+const waveformHeights = [
+  42, 65, 38, 80, 55, 70, 30, 90, 45, 60, 35, 75, 50, 85, 40,
+  68, 32, 78, 58, 88, 44, 62, 36, 72, 52, 82, 48, 66, 34, 76,
+  46, 64, 38, 74, 54, 84, 42, 70, 40, 78,
+];
+
 function generateRoomCode() {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
@@ -231,7 +237,7 @@ export default function DuetRoom() {
       {/* Visual Waveform */}
       <div className="bg-black/30 border border-white/10 rounded-xl p-4 flex items-center justify-center h-24">
         <div className="flex items-end gap-1 w-full">
-          {Array.from({ length: 40 }).map((_, i) => (
+          {waveformHeights.map((h, i) => (
             <div
               key={i}
               className={`flex-1 rounded-full transition-all duration-200 ${
@@ -239,8 +245,8 @@ export default function DuetRoom() {
               }`}
               style={{
                 height: isRecording || isPlaying
-                  ? `${Math.sin(i * 0.5 + Date.now() * 0.001) * 30 + 40}%`
-                  : `${Math.sin(i * 0.8) * 10 + 15}%`,
+                  ? `${h * 0.6 + 20}%`
+                  : `${h * 0.2 + 10}%`,
               }}
             />
           ))}

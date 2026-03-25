@@ -15,7 +15,7 @@ export default function SongGenerator() {
   const [copied, setCopied] = useState(false);
 
   const barHeights = useMemo(
-    () => Array.from({ length: 12 }, () => Math.floor(Math.random() * 40 + 10)),
+    () => [20, 45, 30, 50, 15, 40, 35, 25, 48, 22, 38, 12],
     []
   );
 
