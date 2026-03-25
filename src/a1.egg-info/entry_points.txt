@@ -1,0 +1,2 @@
+[console_scripts]
+a1 = a1.main:run
