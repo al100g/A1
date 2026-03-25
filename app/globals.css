@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0f0a1e;
+  --foreground: #f0e6ff;
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --secondary: #1e0a3c;
+  --accent: #a855f7;
+  --muted: #2d1a4a;
+  --border: #3b1e6e;
+  --card: #160d2e;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #0f0a1e 0%, #1a0533 50%, #0a0f2e 100%);
+}
+
+.hero-gradient {
+  background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.3) 0%, transparent 70%);
+}
+
+.card-gradient {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #a855f7, #7c3aed, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
