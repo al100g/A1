@@ -14,6 +14,7 @@ export function getRedisClient(): Redis | null {
         maxRetriesPerRequest: 1,
       });
       redisClient.on('error', () => {
+        redisClient?.disconnect();
         redisClient = null;
       });
     } catch {
