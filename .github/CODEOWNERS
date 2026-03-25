@@ -1,0 +1,5 @@
+# CODEOWNERS – every pull request must be approved by the repository owner.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global rule: al100g must approve every change.
+* @al100g

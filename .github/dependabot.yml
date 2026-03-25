@@ -1,0 +1,28 @@
+version: 2
+updates:
+  # Keep GitHub Actions up to date
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "al100g"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # Keep npm dependencies up to date (ready for when package.json is added)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "al100g"
+    labels:
+      - "dependencies"
+    ignore:
+      # Ignore major version bumps for stability; review these manually
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
