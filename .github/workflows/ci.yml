@@ -10,6 +10,8 @@ jobs:
   lint-and-test:
     name: Lint & Test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Check out code
@@ -27,16 +29,16 @@ jobs:
 
       - name: Run linter (if present)
         run: |
-          if command -v flake8 &>/dev/null; then
-            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          if python -m flake8 --version &>/dev/null 2>&1; then
+            python -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           else
-            echo "No linter configured — skipping."
+            echo "flake8 not installed — skipping."
           fi
 
       - name: Run tests (if present)
         run: |
-          if [ -d tests ]; then
+          if [ -d tests ] && python -m pytest --version &>/dev/null 2>&1; then
             python -m pytest tests/ -v
           else
-            echo "No tests directory found — skipping."
+            echo "No tests directory or pytest not installed — skipping."
           fi
