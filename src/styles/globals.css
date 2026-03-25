@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 2, 20;
+  --background-end-rgb: 18, 4, 38;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+    to bottom,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-violet-300;
+  }
+
+  .card-glass {
+    @apply bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500
+    text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300
+    shadow-lg shadow-purple-900/30 hover:shadow-purple-700/40 hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply border border-purple-500/50 hover:border-purple-400 text-purple-300 hover:text-white
+    font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:bg-purple-900/30;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0214;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6d28d9;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7c3aed;
+}
+
+/* Waveform bars animation */
+@keyframes waveform {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+.waveform-bar {
+  animation: waveform 1s ease-in-out infinite;
+}
+
+.waveform-bar:nth-child(2) { animation-delay: 0.1s; }
+.waveform-bar:nth-child(3) { animation-delay: 0.2s; }
+.waveform-bar:nth-child(4) { animation-delay: 0.3s; }
+.waveform-bar:nth-child(5) { animation-delay: 0.4s; }
+.waveform-bar:nth-child(6) { animation-delay: 0.15s; }
+.waveform-bar:nth-child(7) { animation-delay: 0.25s; }
+.waveform-bar:nth-child(8) { animation-delay: 0.35s; }
