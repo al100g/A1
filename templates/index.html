@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A1 – Your Personal Song</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <header class="hero">
+    <h1>🎵 A1</h1>
+    <p class="tagline">Music &amp; Mood Empowerment</p>
+  </header>
+
+  <main class="container">
+
+    <!-- Step 1 – Mood & preferences -->
+    <section class="card" id="step-mood">
+      <h2>How are you feeling today?</h2>
+
+      <div class="mood-grid" id="moodGrid">
+        {% for mood in moods %}
+        <button class="mood-btn" data-mood="{{ mood }}">
+          {{ mood | capitalize }}
+        </button>
+        {% endfor %}
+      </div>
+
+      <div class="form-group">
+        <label for="themeInput">Song theme (optional)</label>
+        <input
+          type="text"
+          id="themeInput"
+          placeholder="e.g. love, life, hope, adventure…"
+          maxlength="60"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="nameInput">Your name (optional – personalises the song)</label>
+        <input
+          type="text"
+          id="nameInput"
+          placeholder="Your first name"
+          maxlength="40"
+        />
+      </div>
+
+      <button class="btn-primary" id="generateBtn" disabled>
+        ✨ Write My Song
+      </button>
+    </section>
+
+    <!-- Loading indicator -->
+    <div class="loading hidden" id="loading">
+      <div class="spinner"></div>
+      <p>A1 is composing your song…</p>
+    </div>
+
+    <!-- Step 2 – Song result -->
+    <section class="card hidden" id="step-result">
+
+      <div class="result-header">
+        <h2>🎶 Your Personalised Song</h2>
+        <span class="badge" id="moodBadge"></span>
+      </div>
+
+      <!-- Lyrics -->
+      <div class="lyrics-box">
+        <pre id="lyricsOutput"></pre>
+      </div>
+
+      <!-- Music profile -->
+      <div class="info-panel" id="musicPanel">
+        <h3>🎸 Music</h3>
+        <p id="musicDescription"></p>
+        <ul id="musicDetails"></ul>
+        <p class="source-note" id="musicSource"></p>
+      </div>
+
+      <!-- Voice profile -->
+      <div class="info-panel" id="voicePanel">
+        <h3>🎤 Voice</h3>
+        <p id="voiceDescription"></p>
+        <p class="source-note" id="voiceSource"></p>
+      </div>
+
+      <!-- Audio players (shown only when real audio is returned) -->
+      <div id="audioSection" class="hidden">
+        <h3>▶ Listen</h3>
+        <div id="audioPlayers"></div>
+      </div>
+
+      <!-- Adjust -->
+      <div class="adjust-panel">
+        <h3>🎛 Adjust the Music</h3>
+        <div class="adjust-row">
+          <input
+            type="text"
+            id="adjustInput"
+            placeholder='e.g. "make it more upbeat", "add piano", "add strings"'
+            maxlength="80"
+          />
+          <button class="btn-secondary" id="adjustBtn">Apply</button>
+        </div>
+        <p class="adjust-msg hidden" id="adjustMsg"></p>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button class="btn-secondary" id="copyBtn">📋 Copy Lyrics</button>
+        <button class="btn-secondary" id="startOverBtn">🔄 Start Over</button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <p>A1 – Music &amp; Mood Empowerment &copy; 2025</p>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
