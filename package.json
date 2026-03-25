@@ -1,0 +1,24 @@
+{
+  "name": "a1",
+  "version": "1.0.0",
+  "description": "A1 - A music and mood empowerment assistant that recommends songs based on your detected mood.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/al100g/A1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/al100g/A1/issues"
+  },
+  "homepage": "https://github.com/al100g/A1#readme",
+  "devDependencies": {
+    "jest": "^30.3.0"
+  }
+}
