@@ -27,5 +27,5 @@
 If the deployment fails, you can roll back to the previous version:
 ```bash
 git reset --hard HEAD~1
-pm restart your-app-name
+pm2 restart your-app-name
 ```

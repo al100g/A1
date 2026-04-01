@@ -16,9 +16,9 @@ Thank you for your interest in contributing to the A1 project! We are excited to
    ```
 
 3. **Run the application**:
-   You can start the application by running:
+   You can start the development server by running:
    ```bash
-   npm start
+   npm run dev
    ```
 
 ## Making Changes
