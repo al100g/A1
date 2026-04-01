@@ -1,1 +1,22 @@
-{\n  "name": "music-ai-app",\n  "version": "1.0.0",\n  "description": "A music AI application built with Next.js",\n  "main": "index.js",\n  "scripts": {\n    "dev": "next dev",\n    "build": "next build",\n    "start": "next start"\n  },\n  "dependencies": {\n    "next": "latest",\n    "react": "latest",\n    "react-dom": "latest"\n  },\n  "devDependencies": {\n    "eslint": "latest",\n    "eslint-config-next": "latest"\n  }\n}
+{
+  "name": "music-ai-app",
+  "version": "1.0.0",
+  "description": "A music AI application built with Next.js",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^15.2.9",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "stripe": "^17.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^15.2.9"
+  }
+}
