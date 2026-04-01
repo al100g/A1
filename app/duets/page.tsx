@@ -21,9 +21,9 @@ export default function DuetsPage() {
   const [activeRoom, setActiveRoom] = useState('');
 
   const handleCreate = () => {
-    const array = new Uint8Array(4);
+    const array = new Uint8Array(8);
     crypto.getRandomValues(array);
-    const code = Array.from(array, b => b.toString(36)).join('').substring(0, 6).toUpperCase();
+    const code = Array.from(array, b => b.toString(36).padStart(2, '0')).join('').slice(0, 6).toUpperCase();
     setActiveRoom(code);
     setJoined(true);
   };
