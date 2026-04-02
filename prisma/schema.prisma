@@ -1,0 +1,184 @@
+// This is your Prisma schema file for the A1 Music & Mood Platform.
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTHENTICATION (NextAuth.js v4 required models)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  moodEntries   MoodEntry[]
+  songs         Song[]
+  duets         Duet[]
+  playlists     Playlist[]
+  preferences   UserPreference?
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// APPLICATION MODELS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model MoodEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  mood      String   // e.g. "happy", "sad", "calm", "energetic", "hopeful", "melancholy"
+  intensity Int      @default(5) // 1-10 scale
+  notes     String?  @db.Text
+  source    String   @default("text") // "text" | "voice"
+  createdAt DateTime @default(now())
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  songs Song[]
+
+  @@index([userId, createdAt])
+  @@map("mood_entries")
+}
+
+model Song {
+  id          String   @id @default(cuid())
+  userId      String
+  moodEntryId String?
+  title       String
+  lyrics      String   @db.Text
+  genre       String   // e.g. "pop", "r&b", "rock", "jazz", "classical", "electronic"
+  mood        String
+  audioUrl    String?
+  isPublic    Boolean  @default(false)
+  source      String   @default("ai") // "ai" | "fallback" | "user"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moodEntry   MoodEntry?  @relation(fields: [moodEntryId], references: [id])
+  playlists   PlaylistSong[]
+
+  @@index([userId, createdAt])
+  @@map("songs")
+}
+
+model Duet {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  lyrics      String   @db.Text
+  userPart    String   @db.Text
+  aiPart      String   @db.Text
+  audioUrl    String?
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("duets")
+}
+
+model Playlist {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?  @db.Text
+  coverImage  String?
+  mood        String?
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user  User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  songs PlaylistSong[]
+
+  @@index([userId])
+  @@map("playlists")
+}
+
+model PlaylistSong {
+  id         String   @id @default(cuid())
+  playlistId String
+  songId     String
+  position   Int
+  addedAt    DateTime @default(now())
+
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  song     Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, songId])
+  @@index([playlistId, position])
+  @@map("playlist_songs")
+}
+
+model UserPreference {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  defaultGenre     String   @default("pop")
+  defaultMood      String   @default("happy")
+  notifications    Boolean  @default(true)
+  publicProfile    Boolean  @default(false)
+  theme            String   @default("dark")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}

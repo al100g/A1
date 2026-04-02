@@ -1,13 +1,23 @@
 {
-  "name": "music-ai-app",
+  "name": "a1-music-app",
   "version": "1.0.0",
-  "description": "A music AI application built with Next.js",
+  "description": "A1 — AI-powered music and mood empowerment platform built with Next.js 15",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "test": "jest --passWithNoTests",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio",
+    "postinstall": "prisma generate || true"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts"
   },
   "dependencies": {
     "next": "^15.2.9",
