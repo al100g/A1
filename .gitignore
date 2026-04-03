@@ -78,6 +78,14 @@ web_modules/
 .next
 out
 
+# Next.js generated types (auto-regenerated)
+next-env.d.ts
+
+# Lock files (keep package.json only)
+package-lock.json
+yarn.lock
+
+
 # Nuxt.js build / generate output
 .nuxt
 dist
