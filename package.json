@@ -20,13 +20,21 @@
     "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts"
   },
   "dependencies": {
+    "@prisma/client": "^5.20.0",
     "next": "^15.2.9",
+    "next-auth": "^5.1.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "stripe": "^17.7.0"
   },
   "devDependencies": {
+    "@types/node": "^20.17.6",
+    "@types/react": "^18.3.18",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^15.2.9"
+    "eslint-config-next": "^15.2.9",
+    "jest": "^29.7.0",
+    "prisma": "^5.20.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   }
 }
