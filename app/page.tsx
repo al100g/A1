@@ -33,7 +33,7 @@ const features = [
     icon: ListMusic,
     title: 'Mood Playlists',
     description: 'Curated playlists that match your current mood. Discover new music that resonates with how you feel.',
-    href: '/playlists',
+    href: '/mood',
     color: 'text-indigo-400',
     bgColor: 'bg-indigo-400/10',
     borderColor: 'border-indigo-400/20',
