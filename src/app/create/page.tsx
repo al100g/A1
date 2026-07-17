@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import UpgradePrompt from "@/components/UpgradePrompt";
+import { useSubscription } from "@/hooks/useSubscription";
 
 const GENRES = ["Pop", "R&B", "Hip-Hop", "Indie", "Rock", "Lo-fi", "Country", "EDM"];
 const MOODS = ["Happy", "Sad", "Energetic", "Calm", "Hopeful", "Romantic", "Angry", "Nostalgic"];
@@ -80,11 +82,13 @@ function generateLyrics(mood: string): string {
 }
 
 export default function CreatePage() {
+  const { subscription, isVip } = useSubscription("demo-user");
   const [step, setStep] = useState(1);
   const [mood, setMood] = useState("");
   const [genre, setGenre] = useState("");
   const [theme, setTheme] = useState("");
   const [message, setMessage] = useState("");
+  const [voice, setVoice] = useState("A1 Default");
   const [lyrics, setLyrics] = useState("");
   const [generating, setGenerating] = useState(false);
 
@@ -134,6 +138,12 @@ export default function CreatePage() {
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
           <h2 className="mb-6 text-lg font-bold text-white">Choose your style</h2>
 
+          {isVip && (
+            <div className="mb-6 rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-100">
+              👑 VIP priority generation enabled (target: &lt;3 seconds)
+            </div>
+          )}
+
           <div className="mb-6">
             <label className="mb-3 block text-sm font-semibold text-white/70">
               Mood *
@@ -178,6 +188,29 @@ export default function CreatePage() {
 
           <div className="mb-8">
             <label className="mb-3 block text-sm font-semibold text-white/70">
+              Voice
+            </label>
+            {subscription.features.voiceChoice ? (
+              <select
+                value={voice}
+                onChange={(e) => setVoice(e.target.value)}
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              >
+                <option value="A1 Default">A1 Default</option>
+                <option value="Warm Pop">Warm Pop</option>
+                <option value="Soulful R&B">Soulful R&B</option>
+                <option value="Indie Air">Indie Air</option>
+                {subscription.features.voiceClone && (
+                  <option value="My AI Voice Clone">My AI Voice Clone (VIP)</option>
+                )}
+              </select>
+            ) : (
+              <UpgradePrompt requiredTier="Plus" featureName="Voice choice selector" />
+            )}
+          </div>
+
+          <div className="mb-8">
+            <label className="mb-3 block text-sm font-semibold text-white/70">
               Theme (optional)
             </label>
             <div className="grid grid-cols-4 gap-2">
@@ -195,6 +228,21 @@ export default function CreatePage() {
                 </button>
               ))}
             </div>
+          </div>
+
+          <div className="mb-8">
+            <label className="mb-3 block text-sm font-semibold text-white/70">
+              Upload your own beat
+            </label>
+            {subscription.features.beatUpload ? (
+              <input
+                type="file"
+                accept=".mp3,.wav,.m4a"
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70 file:mr-3 file:rounded-md file:border-0 file:bg-purple-600 file:px-3 file:py-1.5 file:text-white"
+              />
+            ) : (
+              <UpgradePrompt requiredTier="Creator" featureName="Beat upload" />
+            )}
           </div>
 
           <button
@@ -250,7 +298,11 @@ export default function CreatePage() {
               disabled={generating}
               className="flex-[2] rounded-xl bg-purple-600 py-3 font-bold text-white transition hover:bg-purple-500 disabled:opacity-60"
             >
-              {generating ? "A1 is writing your song…" : "✨ Generate My Song →"}
+              {generating
+                ? "A1 is writing your song…"
+                : subscription.features.fullAiGeneration
+                  ? "✨ Generate Full AI Song →"
+                  : "✨ Generate Sample Song (Upgrade for full AI) →"}
             </button>
           </div>
         </div>
@@ -284,6 +336,22 @@ export default function CreatePage() {
           </div>
 
           <div className="flex flex-col gap-3">
+            {subscription.features.recordDuets ? (
+              <button className="w-full rounded-xl bg-purple-600 py-3 font-semibold text-white transition hover:bg-purple-500">
+                ⏺️ Record Duet
+              </button>
+            ) : (
+              <UpgradePrompt requiredTier="Pro" featureName="Record duets" />
+            )}
+
+            {subscription.features.downloadMp3 ? (
+              <button className="w-full rounded-xl bg-emerald-600 py-3 font-semibold text-white transition hover:bg-emerald-500">
+                ⬇️ Download MP3
+              </button>
+            ) : (
+              <UpgradePrompt requiredTier="Pro" featureName="MP3 download" />
+            )}
+
             <button
               onClick={() => {
                 setStep(1);
@@ -291,6 +359,7 @@ export default function CreatePage() {
                 setGenre("");
                 setTheme("");
                 setMessage("");
+                setVoice("A1 Default");
                 setLyrics("");
               }}
               className="w-full rounded-xl border border-white/20 bg-white/5 py-3 font-semibold text-white transition hover:bg-white/10"

@@ -1,0 +1,90 @@
+-- Subscription system schema for A1 Music
+CREATE TABLE IF NOT EXISTS subscriptions (
+  user_id TEXT PRIMARY KEY,
+  tier TEXT NOT NULL CHECK (tier IN ('free', 'plus', 'pro', 'creator', 'vip')),
+  status TEXT NOT NULL DEFAULT 'active',
+  stripe_customer_id TEXT UNIQUE,
+  stripe_subscription_id TEXT UNIQUE,
+  current_period_end TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS subscription_features (
+  id BIGSERIAL PRIMARY KEY,
+  tier TEXT NOT NULL CHECK (tier IN ('free', 'plus', 'pro', 'creator', 'vip')),
+  feature_key TEXT NOT NULL,
+  enabled BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (tier, feature_key)
+);
+
+CREATE TABLE IF NOT EXISTS vip_profiles (
+  user_id TEXT PRIMARY KEY REFERENCES subscriptions(user_id) ON DELETE CASCADE,
+  voice_clone_model TEXT,
+  vip_badge BOOLEAN NOT NULL DEFAULT TRUE,
+  zoom_scheduled_date TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+INSERT INTO subscription_features (tier, feature_key, enabled) VALUES
+('free', 'unlimitedDuets', FALSE),
+('free', 'voiceChoice', FALSE),
+('free', 'recordDuets', FALSE),
+('free', 'downloadMp3', FALSE),
+('free', 'fullAiGeneration', FALSE),
+('free', 'beatUpload', FALSE),
+('free', 'voiceClone', FALSE),
+('free', 'priorityGeneration', FALSE),
+('free', 'licensedHitsAccess', FALSE),
+('free', 'monthlyZoomSession', FALSE),
+('free', 'vipBadge', FALSE),
+('plus', 'unlimitedDuets', TRUE),
+('plus', 'voiceChoice', TRUE),
+('plus', 'recordDuets', FALSE),
+('plus', 'downloadMp3', FALSE),
+('plus', 'fullAiGeneration', FALSE),
+('plus', 'beatUpload', FALSE),
+('plus', 'voiceClone', FALSE),
+('plus', 'priorityGeneration', FALSE),
+('plus', 'licensedHitsAccess', FALSE),
+('plus', 'monthlyZoomSession', FALSE),
+('plus', 'vipBadge', FALSE),
+('pro', 'unlimitedDuets', TRUE),
+('pro', 'voiceChoice', TRUE),
+('pro', 'recordDuets', TRUE),
+('pro', 'downloadMp3', TRUE),
+('pro', 'fullAiGeneration', FALSE),
+('pro', 'beatUpload', FALSE),
+('pro', 'voiceClone', FALSE),
+('pro', 'priorityGeneration', FALSE),
+('pro', 'licensedHitsAccess', FALSE),
+('pro', 'monthlyZoomSession', FALSE),
+('pro', 'vipBadge', FALSE),
+('creator', 'unlimitedDuets', TRUE),
+('creator', 'voiceChoice', TRUE),
+('creator', 'recordDuets', TRUE),
+('creator', 'downloadMp3', TRUE),
+('creator', 'fullAiGeneration', TRUE),
+('creator', 'beatUpload', TRUE),
+('creator', 'voiceClone', FALSE),
+('creator', 'priorityGeneration', FALSE),
+('creator', 'licensedHitsAccess', FALSE),
+('creator', 'monthlyZoomSession', FALSE),
+('creator', 'vipBadge', FALSE),
+('vip', 'unlimitedDuets', TRUE),
+('vip', 'voiceChoice', TRUE),
+('vip', 'recordDuets', TRUE),
+('vip', 'downloadMp3', TRUE),
+('vip', 'fullAiGeneration', TRUE),
+('vip', 'beatUpload', TRUE),
+('vip', 'voiceClone', TRUE),
+('vip', 'priorityGeneration', TRUE),
+('vip', 'licensedHitsAccess', TRUE),
+('vip', 'monthlyZoomSession', TRUE),
+('vip', 'vipBadge', TRUE)
+ON CONFLICT (tier, feature_key) DO UPDATE SET
+  enabled = EXCLUDED.enabled,
+  updated_at = NOW();

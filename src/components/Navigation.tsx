@@ -8,6 +8,8 @@ const navLinks = [
   { href: "/mood", label: "Mood Detector" },
   { href: "/create", label: "Create Song" },
   { href: "/playlists", label: "Playlists" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/subscription/manage", label: "Subscription" },
 ];
 
 export default function Navigation() {
