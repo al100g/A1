@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import UpgradePrompt from "@/components/UpgradePrompt";
+import { useSubscription } from "@/hooks/useSubscription";
 
 const MOOD_OPTIONS = [
   { emoji: "😢", label: "Sad", color: "border-blue-500 bg-blue-500/10 text-blue-300" },
@@ -49,6 +51,7 @@ const MOOD_SONGS: Record<string, { title: string; artist: string; snippet: strin
 };
 
 export default function MoodPage() {
+  const { subscription, isVip } = useSubscription("demo-user");
   const [text, setText] = useState("");
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [detectedMood, setDetectedMood] = useState<string | null>(null);
@@ -87,6 +90,20 @@ export default function MoodPage() {
         </h1>
         <p className="text-white/60">
           Tell A1 how you&apos;re feeling and get music perfectly matched to your mood.
+        </p>
+        {isVip && (
+          <p className="mt-3 inline-block rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-xs font-semibold text-yellow-200">
+            👑 VIP badge — priority generation active
+          </p>
+        )}
+      </div>
+
+      <div className="mb-6 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
+        <p className="font-semibold text-white">Current tier: <span className="capitalize">{subscription.tier}</span></p>
+        <p className="mt-1 text-white/60">
+          {subscription.features.unlimitedDuets
+            ? "Unlimited duets enabled."
+            : "Free tier includes basic duets only with pre-set voices."}
         </p>
       </div>
 
@@ -135,6 +152,16 @@ export default function MoodPage() {
       >
         {loading ? "Analyzing your mood…" : "Detect My Mood & Get Songs →"}
       </button>
+
+      <div className="mb-10">
+        {subscription.features.voiceChoice ? (
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
+            Voice choice unlocked for your duets.
+          </div>
+        ) : (
+          <UpgradePrompt requiredTier="Plus" featureName="Voice choice" />
+        )}
+      </div>
 
       {/* Results */}
       {detectedMood && !loading && (
